@@ -1,2 +1,6 @@
-# mega_nz-Creator
-Selenium Mega.nz creator
+# Start
+Double click start.bat or accr.py
+
+Done!
+
+Accounts saved in accounts.txt
