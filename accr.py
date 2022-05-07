@@ -99,7 +99,6 @@ class megabot:
 
 if __name__ == '__main__':
     accs = gen_mega(f=input("Enter a username to generate accounts: ").strip(), count=int(input("How many accounts should be generated?: "))).gen_accounts()
-    print(accs)
     set_pass = input("Set password for all accounts: ")
     thread = int(input("How many threads?: "))
 
@@ -110,7 +109,6 @@ if __name__ == '__main__':
     while True:
         for i in range(thread):
             t = Thread(target=megabot(e=q.get(), p=set_pass).start, args=())
-            print(q.qsize())
             threads.append(t)
             t.start()
 
