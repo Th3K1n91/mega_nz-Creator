@@ -1,13 +1,19 @@
+pck = ["selenium", "requests"]
 import queue
 import time
+import install
 from threading import Thread
-from Modules.gen import gen_mega
-from Modules.infos import get_inofs
-from Modules.xitrooapi import xitroo
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+try:
+    from Modules.gen import gen_mega
+    from Modules.infos import get_inofs
+    from Modules.xitrooapi import xitroo
+    from selenium import webdriver
+    from selenium.webdriver.common.by import By
+    from selenium.webdriver.support.wait import WebDriverWait
+    from selenium.webdriver.support import expected_conditions as EC
+except:
+    for p in pck:
+        install.install(p)
 
 
 class megabot:
