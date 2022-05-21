@@ -1,9 +1,14 @@
-pck = ["selenium", "requests"]
+pck = ["selenium", "requests", "PyQt5"]
 import queue
+import sys
 import time
 import install
+import os
 from threading import Thread
 try:
+    from PyQt5 import QtWidgets, QtGui,uic
+    from PyQt5.QtGui import QPixmap
+    from PyQt5.QtWidgets import QDialog
     from Modules.gen import gen_mega
     from Modules.infos import get_inofs
     from Modules.xitrooapi import xitroo
@@ -15,6 +20,41 @@ except:
     for p in pck:
         install.install(p)
 
+
+class Ui(QDialog):
+    def __init__(self):
+        super(Ui, self).__init__()
+        uic.loadUi('gui.ui', self)
+        self.setWindowIcon(QtGui.QIcon('images/logo.png'))
+        self.setWindowTitle("Mega.nz Creator")
+        self.show()
+        self.image.setPixmap(QPixmap("images/logo.png"))
+        self.start.clicked.connect(self.st)
+        self.site.clicked.connect(self.pr)
+
+    def pr(self):
+        os.system("start https://cracked.io/insuckablyat88")
+
+    def st(self):
+        accs = gen_mega(f=str(self.username.text()).strip(), count=int(self.count.text())).gen_accounts()
+        set_pass = str(self.password.text())
+        thread = int(self.threads.text())
+
+        q = queue.Queue()
+        threads = list()
+        for i in accs:
+            q.put(i)
+        while True:
+            for i in range(thread):
+                t = Thread(target=megabot(e=q.get(), p=set_pass).start, args=())
+                threads.append(t)
+                t.start()
+
+            if q.empty() == True:
+                break
+
+            for t in threads:
+                t.join()
 
 class megabot:
     def __init__(self, e, p):
@@ -70,7 +110,6 @@ class megabot:
             self.find('//*[@id="register_form"]/button').click()
         except:
             print('Register ERROR')
-            input()
 
     def emailotp(self):
         time.sleep(5)
@@ -104,22 +143,6 @@ class megabot:
 
 
 if __name__ == '__main__':
-    accs = gen_mega(f=input("Enter a username to generate accounts: ").strip(), count=int(input("How many accounts should be generated?: "))).gen_accounts()
-    set_pass = input("Set password for all accounts: ")
-    thread = int(input("How many threads?: "))
-
-    q = queue.Queue()
-    threads = list()
-    for i in accs:
-        q.put(i)
-    while True:
-        for i in range(thread):
-            t = Thread(target=megabot(e=q.get(), p=set_pass).start, args=())
-            threads.append(t)
-            t.start()
-
-        if q.empty() == True:
-            break
-
-        for t in threads:
-            t.join()
+    app = QtWidgets.QApplication(sys.argv)
+    window = Ui()
+    app.exec_()
