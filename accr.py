@@ -19,16 +19,8 @@ try:
 except:
     for p in pck:
         install.install(p)
-    from PyQt5 import QtWidgets, QtGui,uic
-    from PyQt5.QtGui import QPixmap
-    from PyQt5.QtWidgets import QDialog
-    from Modules.gen import gen_mega
-    from Modules.infos import get_inofs
-    from Modules.xitrooapi import xitroo
-    from selenium import webdriver
-    from selenium.webdriver.common.by import By
-    from selenium.webdriver.support.wait import WebDriverWait
-    from selenium.webdriver.support import expected_conditions as EC
+    print("\nPlease Restart")
+    time.sleep(5)
 
 
 class Ui(QDialog):
