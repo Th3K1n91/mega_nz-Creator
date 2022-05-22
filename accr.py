@@ -38,25 +38,27 @@ class Ui(QDialog):
         os.system("start https://cracked.io/insuckablyat88")
 
     def st(self):
-        accs = gen_mega(f=str(self.username.text()).strip(), count=int(self.count.text())).gen_accounts()
-        set_pass = str(self.password.text())
-        thread = int(self.threads.text())
+        if self.username.text() and self.count.text() and self.password.text() and self.threads.text() != "":
+            print(1)
+            accs = gen_mega(f=str(self.username.text()).strip(), count=int(self.count.text())).gen_accounts()
+            set_pass = str(self.password.text())
+            thread = int(self.threads.text())
 
-        q = queue.Queue()
-        threads = list()
-        for i in accs:
-            q.put(i)
-        while True:
-            for i in range(thread):
-                t = Thread(target=megabot(e=q.get(), p=set_pass).start, args=())
-                threads.append(t)
-                t.start()
+            q = queue.Queue()
+            threads = list()
+            for i in accs:
+                q.put(i)
+            while True:
+                for i in range(thread):
+                    t = Thread(target=megabot(e=q.get(), p=set_pass).start, args=())
+                    threads.append(t)
+                    t.start()
 
-            if q.empty() == True:
-                break
+                if q.empty() == True:
+                    break
 
-            for t in threads:
-                t.join()
+                for t in threads:
+                    t.join()
 
 class megabot:
     def __init__(self, e, p):
