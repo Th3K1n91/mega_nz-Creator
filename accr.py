@@ -1,4 +1,4 @@
-pck = ["selenium", "requests", "pyqt5"]
+pck = ["selenium", "requests", "pyqt5", "undetected-chromedriver"]
 import queue
 import sys
 import time
@@ -6,6 +6,7 @@ import install
 import os
 from threading import Thread
 try:
+    import undetected_chromedriver as uc
     from PyQt5 import QtWidgets, QtGui,uic
     from PyQt5.QtGui import QPixmap
     from PyQt5.QtWidgets import QDialog
@@ -39,7 +40,6 @@ class Ui(QDialog):
 
     def st(self):
         if self.username.text() and self.count.text() and self.password.text() and self.threads.text() != "":
-            print(1)
             accs = gen_mega(f=str(self.username.text()).strip(), count=int(self.count.text())).gen_accounts()
             set_pass = str(self.password.text())
             thread = int(self.threads.text())
@@ -66,12 +66,9 @@ class megabot:
         self.wait = 2
         self.psw = p
         # DRIVER ------------------------------------------------------------------------------------------------
-        options = webdriver.ChromeOptions()
+        options = uc.ChromeOptions()
         options.add_argument('--lang=de-DE')
-        options.add_experimental_option('excludeSwitches', ['enable-logging'])
-        options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        path = "driver\chromedriver.exe"
-        self.driver = webdriver.Chrome(executable_path=path, options=options)
+        self.driver = uc.Chrome(options=options)
         self.driver.set_window_size(1280, 720)
 
     def start(self):
@@ -114,6 +111,7 @@ class megabot:
             self.find('//*[@id="register_form"]/button').click()
         except:
             print('Register ERROR')
+            return
 
     def emailotp(self):
         time.sleep(5)
