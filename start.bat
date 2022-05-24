@@ -1,1 +1,1 @@
-python accr.py
+pythonw accr.py
