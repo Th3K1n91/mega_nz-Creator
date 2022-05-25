@@ -66,18 +66,18 @@ class megabot:
         self.wait = 2
         self.psw = p
         # DRIVER ------------------------------------------------------------------------------------------------
-        options = uc.ChromeOptions()
-        options.add_argument('--lang=de-DE')
-        options.add_argument("--window-size=400,500")
-        self.driver = uc.Chrome(options=options)
+        self.options = uc.ChromeOptions()
+        self.options.add_argument('--lang=de-DE')
+        self.options.add_argument("--window-size=600,500")
+        self.options.add_argument("--app=https://mega.nz/register")
 
     def start(self):
         retry = False
         while True:
             try:
                 self.info = get_inofs()
-                time.sleep(2)
-                self.driver.get('https://mega.nz/register')
+                time.sleep(0.5)
+                self.driver = uc.Chrome(options=self.options)
                 if retry == True:
                     try:
                         self.find('//*[@id="bodyel"]/section[5]/div[14]/button').click()
