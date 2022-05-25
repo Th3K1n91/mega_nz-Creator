@@ -68,8 +68,8 @@ class megabot:
         # DRIVER ------------------------------------------------------------------------------------------------
         options = uc.ChromeOptions()
         options.add_argument('--lang=de-DE')
+        options.add_argument("--window-size=400,500")
         self.driver = uc.Chrome(options=options)
-        self.driver.set_window_size(1280, 720)
 
     def start(self):
         retry = False
