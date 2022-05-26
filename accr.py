@@ -1,4 +1,4 @@
-pck = ["selenium", "requests", "pyqt5", "undetected-chromedriver"]
+pck = ["selenium", "requests", "pyqt5", "undetected-chromedriver", "unofficial-xitroo-api"]
 import queue
 import sys
 import time
@@ -7,12 +7,12 @@ import os
 from threading import Thread
 try:
     import undetected_chromedriver as uc
-    from PyQt5 import QtWidgets, QtGui,uic
+    from PyQt5 import QtWidgets, QtGui, uic
     from PyQt5.QtGui import QPixmap
     from PyQt5.QtWidgets import QDialog
     from Modules.gen import gen_mega
     from Modules.infos import get_inofs
-    from Modules.xitrooapi import xitroo
+    from xitroo.api import xitroo
     from selenium import webdriver
     from selenium.webdriver.common.by import By
     from selenium.webdriver.support.wait import WebDriverWait
@@ -117,7 +117,7 @@ class megabot:
         time.sleep(5)
         while True:
             try:
-                emailtext = xitroo(self.mmail).get_bodytext()
+                emailtext = xitroo(self.mmail).get_bodyText()
                 break
             except:
                 pass
