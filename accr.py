@@ -22,6 +22,7 @@ except:
         install.install(p)
     print("\nPlease Restart")
     time.sleep(5)
+    exit()
 
 
 class Ui(QDialog):
