@@ -1,9 +1,5 @@
-pck = ["selenium", "requests", "pyqt5", "undetected-chromedriver", "unofficial-xitroo-api"]
-import queue
-import sys
-import time
-import install
-import os
+pck = ["selenium", "requests", "pyqt5", "undetected-chromedriver", "unofficial-xitroo-api==0.4"]
+import queue, sys, time, install, os
 from threading import Thread
 try:
     import undetected_chromedriver as uc
@@ -23,7 +19,6 @@ except:
     print("\nPlease Restart")
     time.sleep(5)
     exit()
-
 
 class Ui(QDialog):
     def __init__(self):
@@ -96,7 +91,6 @@ class megabot:
         self.save_to()
         self.driver.close()
 
-
     def register(self):
         try:
             self.wai('//*[@id="register-firstname-registerpage2"]')
@@ -143,7 +137,6 @@ class megabot:
     def find(self, xpath):
         time.sleep(self.wait)
         return self.driver.find_element(By.XPATH, xpath)
-
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
