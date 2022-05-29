@@ -22,7 +22,7 @@ Accounts saved in accounts.txt
 After everything is filled click on Button "Start" and wait at least 5 seconds, if nothing happens please check if every field is filled up
 
 # Example
-![Example_1](/images/example.png)
+![/images/example.png](https://github.com/Th3K1n91/mega_nz-Creator/blob/main/images/example.PNG)
 
 ### Output
 ```
