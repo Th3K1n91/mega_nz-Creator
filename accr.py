@@ -127,6 +127,7 @@ class megabot:
         self.find('//*[@id="login_form"]/button').click()
 
     def save_to(self):
+        print(self.mmail)
         open("accounts.txt", "a+").write(f'{self.mmail}:{self.psw}\n')
 
     # SOME ASSETS ------------------------------------------------------------------------------------------------
