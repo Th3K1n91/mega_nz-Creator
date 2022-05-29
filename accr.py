@@ -1,4 +1,4 @@
-pck = ["selenium", "requests", "pyqt5", "undetected-chromedriver", "unofficial-xitroo-api==0.4"]
+pck = ["selenium", "requests", "pyqt5", "undetected-chromedriver", "unofficial-xitroo-api==0.5"]
 import queue, sys, time, install, os, threading
 from threading import Thread
 try:
@@ -108,7 +108,7 @@ class megabot:
                 emailtext = xitroo(self.mmail).get_bodyText()
                 break
             except: pass
-        try: return emailtext.decode("UTF-8").split('bestätigen:')[1].split('Mit')[0].replace('\n','')
+        try: return emailtext.split('bestätigen:')[1].split('Mit')[0].replace('\n','')
         except: return False
 
     def confirm(self):
