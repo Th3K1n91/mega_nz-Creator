@@ -1,5 +1,5 @@
 pck = ["selenium", "requests", "pyqt5", "undetected-chromedriver", "unofficial-xitroo-api==0.4"]
-import queue, sys, time, install, os
+import queue, sys, time, install, os, threading
 from threading import Thread
 try:
     import undetected_chromedriver as uc
@@ -14,8 +14,7 @@ try:
     from selenium.webdriver.support.wait import WebDriverWait
     from selenium.webdriver.support import expected_conditions as EC
 except:
-    for p in pck:
-        install.install(p)
+    for p in pck: install.install(p)
     print("\nPlease Restart")
     time.sleep(5)
     exit()
@@ -40,21 +39,16 @@ class Ui(QDialog):
             set_pass = str(self.password.text())
             thread = int(self.threads.text())
 
-            q = queue.Queue()
-            threads = list()
-            for i in accs:
-                q.put(i)
+            for i in accs: q.put(i)
             while True:
                 for i in range(thread):
                     t = Thread(target=megabot(e=q.get(), p=set_pass).start, args=())
                     threads.append(t)
                     t.start()
 
-                if q.empty() == True:
-                    break
+                if q.empty() == True: break
 
-                for t in threads:
-                    t.join()
+                for t in threads: t.join()
 
 class megabot:
     def __init__(self, e, p):
@@ -78,8 +72,7 @@ class megabot:
                     try:
                         self.find('//*[@id="bodyel"]/section[5]/div[14]/button').click()
                         self.find('//*[@id="msgDialog"]/footer/div/div/button[2]').click()
-                    except:
-                        pass
+                    except: pass
                 self.register()
                 self.driver.get(self.emailotp())
                 self.confirm()
@@ -114,12 +107,9 @@ class megabot:
             try:
                 emailtext = xitroo(self.mmail).get_bodyText()
                 break
-            except:
-                pass
-        try:
-            return emailtext.decode("UTF-8").split('bestätigen:')[1].split('Mit')[0].replace('\n','')
-        except:
-            return False
+            except: pass
+        try: return emailtext.decode("UTF-8").split('bestätigen:')[1].split('Mit')[0].replace('\n','')
+        except: return False
 
     def confirm(self):
         self.find('//*[@id="login-password2"]').click()
@@ -127,19 +117,23 @@ class megabot:
         self.find('//*[@id="login_form"]/button').click()
 
     def save_to(self):
-        print(self.mmail)
+        lock.acquire()
         open("accounts.txt", "a+").write(f'{self.mmail}:{self.psw}\n')
+        lock.release()
 
     # SOME ASSETS ------------------------------------------------------------------------------------------------
-    def wai(self, xpath):
-        WebDriverWait(self.driver, 600).until(EC.visibility_of_element_located((
-            By.XPATH, xpath)))
+    def wai(self, xpath): WebDriverWait(self.driver, 600).until(EC.visibility_of_element_located((By.XPATH, xpath)))
 
     def find(self, xpath):
         time.sleep(self.wait)
         return self.driver.find_element(By.XPATH, xpath)
 
 if __name__ == '__main__':
+    # Vars
+    lock = threading.Lock()
+    q = queue.Queue()
+    threads = list()
+    # Start App
     app = QtWidgets.QApplication(sys.argv)
     window = Ui()
     app.exec_()
