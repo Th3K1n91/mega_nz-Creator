@@ -1,6 +1,8 @@
-pck = ["selenium", "requests", "pyqt5", "undetected-chromedriver", "unofficial-xitroo-api==0.5"]
+xitroo_ver = "0.5"
+pck = ["unofficial-xitroo-api=="+xitroo_ver, "selenium", "requests", "pyqt5", "undetected-chromedriver"]
 import queue, sys, time, install, os, threading
 from threading import Thread
+from importlib_metadata import version
 try:
     import undetected_chromedriver as uc
     from PyQt5 import QtWidgets, QtGui, uic
@@ -8,6 +10,7 @@ try:
     from PyQt5.QtWidgets import QDialog
     from Modules.gen import gen_mega
     from Modules.infos import get_inofs
+    if version('unofficial-xitroo-api') < xitroo_ver: install.install(pck[0])
     from xitroo.api import xitroo
     from selenium import webdriver
     from selenium.webdriver.common.by import By
