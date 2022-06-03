@@ -1,6 +1,6 @@
 xitroo_ver = "0.5"
-pck = ["unofficial-xitroo-api=="+xitroo_ver, "selenium", "requests", "pyqt5", "undetected-chromedriver"]
-import queue, sys, time, install, os, threading
+pck = f"unofficial-xitroo-api=={xitroo_ver} selenium requests pyqt5 undetected-chromedriver"
+import queue, sys, time, os, threading, subprocess
 from threading import Thread
 from importlib_metadata import version
 try:
@@ -10,14 +10,14 @@ try:
     from PyQt5.QtWidgets import QDialog
     from Modules.gen import gen_mega
     from Modules.infos import get_inofs
-    if version('unofficial-xitroo-api') < xitroo_ver: install.install(pck[0])
+    if version('unofficial-xitroo-api') < xitroo_ver: os.system("pip install " + f"unofficial-xitroo-api=={xitroo_ver}")
     from xitroo.api import xitroo
     from selenium import webdriver
     from selenium.webdriver.common.by import By
     from selenium.webdriver.support.wait import WebDriverWait
     from selenium.webdriver.support import expected_conditions as EC
 except:
-    for p in pck: install.install(p)
+    os.system(f"pip install {pck}")
     print("\nPlease Restart")
     time.sleep(5)
     exit()
@@ -48,16 +48,16 @@ class Ui(QDialog):
                     t = Thread(target=megabot(e=q.get(), p=set_pass).start, args=())
                     threads.append(t)
                     t.start()
-
                 if q.empty() == True: break
-
                 for t in threads: t.join()
 
 class megabot:
     def __init__(self, e, p):
+        #Vars
         self.mmail = e
         self.wait = 2
         self.psw = p
+        self.vers = self.version()
         # DRIVER ------------------------------------------------------------------------------------------------
         self.options = uc.ChromeOptions()
         self.options.add_argument('--lang=de-DE')
@@ -70,7 +70,7 @@ class megabot:
             try:
                 self.info = get_inofs()
                 time.sleep(0.5)
-                self.driver = uc.Chrome(options=self.options)
+                self.driver = uc.Chrome(options=self.options, version_main=self.vers)
                 if retry == True:
                     try:
                         self.find('//*[@id="bodyel"]/section[5]/div[14]/button').click()
@@ -106,13 +106,10 @@ class megabot:
 
     def emailotp(self):
         time.sleep(5)
-        while True:
-            try:
-                emailtext = xitroo(self.mmail).get_bodyText()
-                break
-            except: pass
-        try: return emailtext.split('bestätigen:')[1].split('Mit')[0].replace('\n','')
-        except: return False
+        try:
+            emailtext = xitroo(self.mmail).get_bodyText()
+            return emailtext.split('bestätigen:')[1].split('Mit')[0].replace('\n', '')
+        except: return
 
     def confirm(self):
         self.find('//*[@id="login-password2"]').click()
@@ -130,6 +127,12 @@ class megabot:
     def find(self, xpath):
         time.sleep(self.wait)
         return self.driver.find_element(By.XPATH, xpath)
+
+    def version(self):
+        out = subprocess.Popen(
+            ['reg', 'query', 'HKEY_CURRENT_USER\\Software\\Google\\Chrome\\BLBeacon', '/v', 'version'],
+            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL).communicate()
+        return int(out[0].decode('UTF-8').strip().split()[-1].split(".")[0])
 
 if __name__ == '__main__':
     # Vars
