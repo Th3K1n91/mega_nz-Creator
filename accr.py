@@ -1,5 +1,5 @@
 xitroo_ver = "0.5"
-pck = f"unofficial-xitroo-api=={xitroo_ver} selenium requests pyqt5 undetected-chromedriver"
+pck = ["unofficial-xitroo-api=="+xitroo_ver, "selenium", "requests", "pyqt5", "undetected-chromedriver"]
 import queue, sys, time, os, threading, subprocess
 from threading import Thread
 from importlib_metadata import version
@@ -10,14 +10,14 @@ try:
     from PyQt5.QtWidgets import QDialog
     from Modules.gen import gen_mega
     from Modules.infos import get_inofs
-    if version('unofficial-xitroo-api') < xitroo_ver: os.system("pip install " + f"unofficial-xitroo-api=={xitroo_ver}")
+    if version('unofficial-xitroo-api') < xitroo_ver: os.system(f"pip install {pck[0]}")
     from xitroo.api import xitroo
     from selenium import webdriver
     from selenium.webdriver.common.by import By
     from selenium.webdriver.support.wait import WebDriverWait
     from selenium.webdriver.support import expected_conditions as EC
 except:
-    os.system(f"pip install {pck}")
+    os.system(f"pip install {' '.join(pck)}")
     print("\nPlease Restart")
     time.sleep(5)
     exit()
