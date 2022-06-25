@@ -1,10 +1,10 @@
 xitroo_ver = "0.5"
-pck = ["unofficial-xitroo-api=="+xitroo_ver, "selenium", "requests", "pyqt5", "undetected-chromedriver"]
+pck = ["unofficial-xitroo-api=="+xitroo_ver, "selenium", "requests", "pyqt5", "undetected-chromedriver", "importlib_metadata"]
 import queue, sys, time, os, threading, subprocess
 from threading import Thread
-from importlib_metadata import version
 try:
     import undetected_chromedriver as uc
+    from importlib_metadata import version
     from PyQt5 import QtWidgets, QtGui, uic
     from PyQt5.QtGui import QPixmap
     from PyQt5.QtWidgets import QDialog
@@ -18,7 +18,7 @@ try:
     from selenium.webdriver.support import expected_conditions as EC
 except:
     os.system(f"pip install {' '.join(pck)}")
-    print("\nPlease Restart")
+    print("\nPlease Restart the bot")
     time.sleep(5)
     exit()
 
@@ -127,12 +127,17 @@ class megabot:
     def find(self, xpath):
         time.sleep(self.wait)
         return self.driver.find_element(By.XPATH, xpath)
-
+    # Get Chrome version for line:73
     def version(self):
-        out = subprocess.Popen(
-            ['reg', 'query', 'HKEY_CURRENT_USER\\Software\\Google\\Chrome\\BLBeacon', '/v', 'version'],
-            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL).communicate()
-        return int(out[0].decode('UTF-8').strip().split()[-1].split(".")[0])
+        try:
+            out = subprocess.Popen(
+                ['reg', 'query', 'HKEY_CURRENT_USER\\Software\\Google\\Chrome\\BLBeacon', '/v', 'version'],
+                stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL).communicate()
+            return int(out[0].decode('UTF-8').strip().split()[-1].split(".")[0])
+        except:
+            print("Install Chrome")
+            input("Press Enter to Close Programm")
+            exit()
 
 if __name__ == '__main__':
     # Vars
