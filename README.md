@@ -1,3 +1,6 @@
+# Download
+[Download Here](https://github.com/Th3K1n91/mega_nz-Creator/archive/refs/heads/main.zip)<br>or Clone this Repo
+
 # Start
 Double click start.bat or accr.py
 
