@@ -66,11 +66,11 @@ class megabot:
 
     def start(self):
         retry = False
+        self.driver = uc.Chrome(options=self.options, version_main=self.vers)
         while True:
             try:
                 self.info = get_inofs()
                 time.sleep(0.5)
-                self.driver = uc.Chrome(options=self.options, version_main=self.vers)
                 if retry == True:
                     try:
                         self.find('//*[@id="bodyel"]/section[5]/div[14]/button').click()
@@ -127,7 +127,7 @@ class megabot:
     def find(self, xpath):
         time.sleep(self.wait)
         return self.driver.find_element(By.XPATH, xpath)
-    # Get Chrome version for line:73
+    # Get Chrome version for line:69
     def version(self):
         try:
             out = subprocess.Popen(
