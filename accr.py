@@ -13,7 +13,7 @@ try:
     if version('unofficial-xitroo-api') < xitroo_ver: os.system(f"pip install {pck[0]}")
     from xitroo.api import xitroo
 except:
-    os.system(f"pip install {' '.join(pck)}")
+    os.system(f"pip install {' '.join(pck).strip()}")
     print("\nPlease Restart the bot")
     time.sleep(5)
     exit()
