@@ -20,6 +20,7 @@ except:
 
 class Ui(QDialog):
     def __init__(self):
+        self.special_characters = "!@#$%^&*()[]{}-+?_=,<>/"
         super(Ui, self).__init__()
         uic.loadUi('gui.ui', self)
         self.setWindowIcon(QtGui.QIcon('images/logo.png'))
@@ -34,25 +35,25 @@ class Ui(QDialog):
 
     def st(self):
         if self.username.text() and self.count.text() and self.password.text() and self.threads.text() != "":
-            print("Please Wait")
-            accs = gen_mega(f=str(self.username.text()).strip(), count=int(self.count.text())).gen_accounts()
-            set_pass = str(self.password.text())
-            thread = int(self.threads.text())
-
-            for i in accs: q.put(i)
-            while True:
-                for i in range(thread):
-                    t = Thread(target=megabot(e=q.get(), p=set_pass).start, args=())
-                    threads.append(t)
-                    t.start()
-                if q.empty() == True: break
-                for t in threads: t.join()
+            if len(self.password.text()) >= 8:
+                if (any(char.isupper() for char in self.password.text()) and any(char.islower() for char in self.password.text())) and (any(char.isdigit() for char in self.password.text()) or any(char in self.special_characters for char in self.password.text())):
+                    print("Please Wait")
+                    accs = gen_mega(f=str(self.username.text()).strip(), count=int(self.count.text())).gen_accounts()
+                    set_pass = str(self.password.text())
+                    thread = int(self.threads.text())
+                    for i in accs: q.put(i)
+                    while True:
+                        for i in range(thread):
+                            t = Thread(target=megabot(e=q.get(), p=set_pass).start, args=())
+                            threads.append(t)
+                            t.start()
+                        if q.empty() == True: break
+                        for t in threads: t.join()
 
 class megabot:
     def __init__(self, e, p):
         #Vars
         self.mmail = e
-        self.wait = 3
         self.psw = p
         self.info = get_inofs()
 
@@ -67,7 +68,7 @@ class megabot:
         except: print("Error")
 
     def emailotp(self):
-        time.sleep(5)
+        time.sleep(2)
         try:
             emailtext = xitroo(self.mmail).get_bodyText()
             return emailtext.split('bestätigen:')[1].split('Mit')[0].replace('\n', '')
