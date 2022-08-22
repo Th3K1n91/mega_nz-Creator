@@ -11,6 +11,6 @@ class gen_mega:
     def gen_accounts(self):
         accounts = list()
         for i in range(0, self.count):
-            self.m = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase) for _ in range(random.randint(2, 6)))
+            self.m = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase) for _ in range(random.randint(4, 8)))
             accounts.append(str(self.f+self.m+self.l))
         return accounts

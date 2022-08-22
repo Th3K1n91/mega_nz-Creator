@@ -1,15 +1,11 @@
 import queue, sys, time, os, threading, requests
 from subprocess import PIPE, run
-from threading import Thread
 xitroo_ver = requests.get("https://raw.githubusercontent.com/Th3K1n91/xitroo_api/main/version.txt").text.strip()
 pck = ["unofficial-xitroo-api=="+xitroo_ver, "requests", "pyqt5", "importlib_metadata"]
 try:
     from importlib_metadata import version
     from PyQt5 import QtWidgets, QtGui, uic
-    from PyQt5.QtGui import QPixmap
-    from PyQt5.QtWidgets import QDialog
-    from Modules.gen import gen_mega
-    from Modules.infos import get_inofs
+    from Modules import gen, infos
     if version('unofficial-xitroo-api') < xitroo_ver: os.system(f"pip install {pck[0]}")
     from xitroo.api import xitroo
 except:
@@ -18,7 +14,7 @@ except:
     time.sleep(5)
     exit()
 
-class Ui(QDialog):
+class Ui(QtWidgets.QDialog):
     def __init__(self):
         self.special_characters = "!@#$%^&*()[]{}-+?_=,<>/"
         super(Ui, self).__init__()
@@ -26,7 +22,7 @@ class Ui(QDialog):
         self.setWindowIcon(QtGui.QIcon('images/logo.png'))
         self.setWindowTitle("Mega.nz Creator")
         self.show()
-        self.image.setPixmap(QPixmap("images/logo.png"))
+        self.image.setPixmap(QtGui.QPixmap("images/logo.png"))
         self.start.clicked.connect(self.st)
         self.site.clicked.connect(self.pr)
 
@@ -38,13 +34,13 @@ class Ui(QDialog):
             if len(self.password.text()) >= 8:
                 if (any(char.isupper() for char in self.password.text()) and any(char.islower() for char in self.password.text())) and (any(char.isdigit() for char in self.password.text()) or any(char in self.special_characters for char in self.password.text())):
                     print("Please Wait")
-                    accs = gen_mega(f=str(self.username.text()).strip(), count=int(self.count.text())).gen_accounts()
+                    accs = gen.gen_mega(f=str(self.username.text()).strip(), count=int(self.count.text())).gen_accounts()
                     set_pass = str(self.password.text())
                     thread = int(self.threads.text())
                     for i in accs: q.put(i)
                     while True:
                         for i in range(thread):
-                            t = Thread(target=megabot(e=q.get(), p=set_pass).start, args=())
+                            t = threading.Thread(target=megabot(e=q.get(), p=set_pass).start, args=())
                             threads.append(t)
                             t.start()
                         if q.empty() == True: break
@@ -55,7 +51,7 @@ class megabot:
         #Vars
         self.mmail = e
         self.psw = p
-        self.info = get_inofs()
+        self.info = infos.get_inofs()
 
     def start(self):
         try:
@@ -68,10 +64,8 @@ class megabot:
         except: print("Error")
 
     def emailotp(self):
-        time.sleep(2)
-        try:
-            emailtext = xitroo(self.mmail).get_bodyText()
-            return emailtext.split('bestätigen:')[1].split('Mit')[0].replace('\n', '')
+        time.sleep(3)
+        try: return xitroo(self.mmail).get_bodyText().split('bestätigen:')[1].split('Mit')[0].replace('\n', '')
         except: return
 
     def save_to(self):
