@@ -1,5 +1,5 @@
 # Download
-[Download Here (Python)](https://github.com/Th3K1n91/mega_nz-Creator/archive/refs/heads/main.zip)<br>[Download Here (WIN-EXE)](https://github.com/Th3K1n91/mega_nz-Creator/releases/download/v5/accr-release-5.rar)<br>or Clone this Repo
+[Download Here (Python)](https://github.com/Th3K1n91/mega_nz-Creator/archive/refs/heads/main.zip)<br>[Download Here (WIN-EXE)](https://github.com/Th3K1n91/mega_nz-Creator/releases/download/v5.3/v5.3.rar)<br>or Clone this Repo
 
 # Start
 Double click start.bat or accr.py
