@@ -1,8 +1,10 @@
+#5.3.0
 import queue, sys, time, os, threading, requests
-from subprocess import PIPE, run
 xitroo_ver = requests.get("https://raw.githubusercontent.com/Th3K1n91/xitroo_api/main/version.txt").text.strip()
-pck = ["unofficial-xitroo-api=="+xitroo_ver, "requests", "pyqt5", "importlib_metadata"]
+pck = ["unofficial-xitroo-api=="+xitroo_ver, "pyqt5", "importlib_metadata"]
 try:
+    import requests
+    from subprocess import PIPE, run
     from importlib_metadata import version
     from PyQt5 import QtWidgets, QtGui, uic
     from Modules import gen, infos
@@ -22,11 +24,16 @@ class Ui(QtWidgets.QDialog):
         self.setWindowIcon(QtGui.QIcon('images/logo.png'))
         self.setWindowTitle("Mega.nz Creator")
         self.show()
-        self.image.setPixmap(QtGui.QPixmap("images/logo.png"))
+        self.Image.setPixmap(QtGui.QPixmap("images/logo.png"))
         self.start.clicked.connect(self.st)
-        self.site.clicked.connect(self.pr)
+        self.Name.mousePressEvent = self.pr
+        self.Image.mousePressEvent = self.pr
+        self.Github.mousePressEvent = self.gt
 
-    def pr(self):
+    def gt(self, event):
+        os.system("start https://github.com/Th3K1n91/mega_nz-Creator")
+
+    def pr(self, event):
         os.system("start https://cracked.io/insuckablyat88")
 
     def st(self):
@@ -36,10 +43,9 @@ class Ui(QtWidgets.QDialog):
                     print("Please Wait")
                     accs = gen.gen_mega(f=str(self.username.text()).strip(), count=int(self.count.text())).gen_accounts()
                     set_pass = str(self.password.text())
-                    thread = int(self.threads.text())
                     for i in accs: q.put(i)
                     while True:
-                        for i in range(thread):
+                        for i in range(int(self.threads.text())):
                             t = threading.Thread(target=megabot(e=q.get(), p=set_pass).start, args=())
                             threads.append(t)
                             t.start()
@@ -59,13 +65,18 @@ class megabot:
             k = str(r.stdout).split("--verify ")[1].split(" ")[0]
             l = self.emailotp()
             c = run(f"megatools reg --verify {k} {l}", stdout=PIPE)
+            if log:
+                print(r)
+                print(k)
+                print(l)
+                print(c)
             print(f"[{self.mmail}]\t{c.stdout.decode('UTF-8').split('!')[0]}")
             self.save_to()
         except: print("Error")
 
     def emailotp(self):
         time.sleep(3)
-        try: return xitroo(self.mmail).get_bodyText().split('bestätigen:')[1].split('Mit')[0].replace('\n', '')
+        try: return "https://mega.nz/#confirm" + xitroo(self.mmail).get_bodyHtml().split("https://mega.nz/#confirm")[1].split('"')[0]
         except: return
 
     def save_to(self):
@@ -75,6 +86,7 @@ class megabot:
 
 if __name__ == '__main__':
     # Vars
+    log = False
     lock = threading.Lock()
     q = queue.Queue()
     threads = list()
