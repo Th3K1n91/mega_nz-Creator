@@ -1,4 +1,4 @@
-#5.3.0
+#5.3.2
 import queue, sys, time, os, threading, requests
 xitroo_ver = requests.get("https://raw.githubusercontent.com/Th3K1n91/xitroo_api/main/version.txt").text.strip()
 pck = ["unofficial-xitroo-api=="+xitroo_ver, "pyqt5", "importlib_metadata"]
@@ -46,18 +46,20 @@ class Ui(QtWidgets.QDialog):
                     for i in accs: q.put(i)
                     while True:
                         for i in range(int(self.threads.text())):
-                            t = threading.Thread(target=megabot(e=q.get(), p=set_pass).start, args=())
+                            if q.empty() == True: break
+                            t = threading.Thread(target=megabot(e=q.get(), p=set_pass, l=self.DebugMode.isChecked()).start, args=())
                             threads.append(t)
                             t.start()
                         if q.empty() == True: break
                         for t in threads: t.join()
 
 class megabot:
-    def __init__(self, e, p):
+    def __init__(self, e, p, l):
         #Vars
         self.mmail = e
         self.psw = p
         self.info = infos.get_inofs()
+        self.log = l
 
     def start(self):
         try:
@@ -65,14 +67,16 @@ class megabot:
             k = str(r.stdout).split("--verify ")[1].split(" ")[0]
             l = self.emailotp()
             c = run(f"megatools reg --verify {k} {l}", stdout=PIPE)
-            if log:
-                print(r)
-                print(k)
-                print(l)
-                print(c)
+            if self.log:
+                print(f"{r.stdout.decode('UTF-8')}\n{k}\n{l}\n{c.stdout.decode('UTF-8')}\n{c.stdout.decode('UTF-8')}")
             print(f"[{self.mmail}]\t{c.stdout.decode('UTF-8').split('!')[0]}")
             self.save_to()
-        except: print("Error")
+        except Exception as e:
+            if self.log:
+                print(e)
+            print("Error")
+        except:
+            print("Error")
 
     def emailotp(self):
         time.sleep(3)
@@ -86,7 +90,6 @@ class megabot:
 
 if __name__ == '__main__':
     # Vars
-    log = False
     lock = threading.Lock()
     q = queue.Queue()
     threads = list()

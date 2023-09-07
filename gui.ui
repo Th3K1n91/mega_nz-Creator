@@ -308,7 +308,7 @@ QPushButton:pressed {
     </rect>
    </property>
    <property name="text">
-    <string> V5.3.1</string>
+    <string> V5.3.2</string>
    </property>
   </widget>
   <widget class="QLabel" name="Github">
@@ -384,6 +384,22 @@ Cracked.io/insuckablyat88</string>
    </property>
    <property name="indent">
     <number>0</number>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="DebugMode">
+   <property name="geometry">
+    <rect>
+     <x>75</x>
+     <y>300</y>
+     <width>91</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>Debug Mode</string>
    </property>
   </widget>
  </widget>
