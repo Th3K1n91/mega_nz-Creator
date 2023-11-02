@@ -1,14 +1,12 @@
 #!/usr/bin/python3
 #5.3.3
-import queue, sys, time, os, threading, platform, urllib.request
-xitroo_ver = urllib.request.urlopen("https://raw.githubusercontent.com/Th3K1n91/xitroo_api/main/version.txt").read().decode('utf-8').strip()
-pck = ["unofficial-xitroo-api=="+xitroo_ver, "pyqt5", "importlib_metadata"]
+import queue, sys, time, os, threading, platform
+pck = ["unofficial-xitroo-api==0.7", "pyqt5", "importlib_metadata"]
 try:
     from subprocess import PIPE, run
     from importlib_metadata import version
     from PyQt5 import QtWidgets, QtGui, uic
     from Modules import gen, infos
-    if version('unofficial-xitroo-api') < xitroo_ver: os.system(f"pip3 install {pck[0]}")
     from xitroo.api import xitroo
 except:
     os.system(f"pip3 install {' '.join(pck).strip()}")
