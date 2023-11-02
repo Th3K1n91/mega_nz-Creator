@@ -2,7 +2,7 @@
 [Download Here (Python)](https://github.com/Th3K1n91/mega_nz-Creator/archive/refs/heads/main.zip) (Both WIN and Unix)<br>[Download Here (WIN-EXE)](https://github.com/Th3K1n91/mega_nz-Creator/releases)<br>or Clone this Repo
 
 ## Install For Unix (Linux Mac OSX)
-install python3, qt5 and megatools binary(already in repo)
+install python3, qt5 and megatools binary
 
 # Start
 **Unix:**
