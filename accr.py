@@ -1,17 +1,9 @@
 #!/usr/bin/python3
-#5.3.2
-import queue, sys, time, os, threading, platform
-try:
-    import requests
-except:
-    os.system(f"pip3 install {' '.join(pck).strip()}")
-    print("\nPlease Restart the bot")
-    time.sleep(5)
-    exit()
-xitroo_ver = requests.get("https://raw.githubusercontent.com/Th3K1n91/xitroo_api/main/version.txt").text.strip()
+#5.3.3
+import queue, sys, time, os, threading, platform, urllib.request
+xitroo_ver = urllib.request.urlopen("https://raw.githubusercontent.com/Th3K1n91/xitroo_api/main/version.txt").read().decode('utf-8').strip()
 pck = ["unofficial-xitroo-api=="+xitroo_ver, "pyqt5", "importlib_metadata"]
 try:
-    import requests
     from subprocess import PIPE, run
     from importlib_metadata import version
     from PyQt5 import QtWidgets, QtGui, uic
@@ -30,7 +22,7 @@ except:
     exit()
 
 plt = platform.system()
-if plt == "Linux":
+if plt == "Linux" or plt == "Darwin":
     from pathlib import Path
     path_to_file = '/usr/bin/megatools'
     path = Path(path_to_file)
@@ -40,18 +32,7 @@ if plt == "Linux":
         print(f'please install megatools binary to /usr/bin folder')
         time.sleep(5)
         exit()
-       
-elif plt == "Darwin":
-    from pathlib import Path
-    path_to_file = '/usr/bin/megatools'
-    path = Path(path_to_file)
-    if path.is_file():
-        os.system("rm -f megatools.exe")
-    else:
-        print(f'please install megatools binary to /usr/bin folder')
-        time.sleep(5)
-        exit()
-    
+
 
 class Ui(QtWidgets.QDialog):
     def __init__(self):
@@ -68,15 +49,16 @@ class Ui(QtWidgets.QDialog):
         self.Github.mousePressEvent = self.gt
 
     def gt(self, event):
-        plt = platform.system()
-        if   plt == "Windows":   os.system("start https://github.com/Th3K1n91/mega_nz-Creator")
-        elif plt == "Linux":     os.system("x-www-browser https://github.com/Th3K1n91/mega_nz-Creator")
-        elif plt == "Darwin":    os.system("safari https://github.com/Th3K1n91/mega_nz-Creator")
+        self.urlOpenerUnix("https://github.com/Th3K1n91/mega_nz-Creator")
 
     def pr(self, event):
-        if   plt == "Windows":   os.system("start https://cracked.io/insuckablyat88")
-        elif plt == "Linux":     os.system("x-www-browser https://cracked.io/insuckablyat88")
-        elif plt == "Darwin":    os.system("safari https://cracked.io/insuckablyat88")
+        self.urlOpenerUnix("https://cracked.io/insuckablyat88")
+
+    def urlOpenerUnix(self, url):
+        match plt:
+            case "Windows":   os.system("start " + url)
+            case "Linux":     os.system("x-www-browser " + url)
+            case "Darwin":    os.system("safari " + url)
 
     def st(self):
         if self.username.text() and self.count.text() and self.password.text() and self.threads.text() != "":
@@ -86,13 +68,12 @@ class Ui(QtWidgets.QDialog):
                     accs = gen.gen_mega(f=str(self.username.text()).strip(), count=int(self.count.text())).gen_accounts()
                     set_pass = str(self.password.text())
                     for i in accs: q.put(i)
-                    while True:
+                    while q.empty() != True:
                         for i in range(int(self.threads.text())):
-                            if q.empty() == True: break
+                            if q.empty(): continue
                             t = threading.Thread(target=megabot(e=q.get(), p=set_pass, l=self.DebugMode.isChecked()).start, args=())
                             threads.append(t)
                             t.start()
-                        if q.empty() == True: break
                         for t in threads: t.join()
 
 class megabot:
