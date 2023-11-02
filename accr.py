@@ -1,5 +1,13 @@
+#!/usr/bin/python3
 #5.3.2
-import queue, sys, time, os, threading, requests
+import queue, sys, time, os, threading, platform
+try:
+    import requests
+except:
+    os.system(f"pip3 install {' '.join(pck).strip()}")
+    print("\nPlease Restart the bot")
+    time.sleep(5)
+    exit()
 xitroo_ver = requests.get("https://raw.githubusercontent.com/Th3K1n91/xitroo_api/main/version.txt").text.strip()
 pck = ["unofficial-xitroo-api=="+xitroo_ver, "pyqt5", "importlib_metadata"]
 try:
@@ -8,13 +16,42 @@ try:
     from importlib_metadata import version
     from PyQt5 import QtWidgets, QtGui, uic
     from Modules import gen, infos
-    if version('unofficial-xitroo-api') < xitroo_ver: os.system(f"pip install {pck[0]}")
+    if version('unofficial-xitroo-api') < xitroo_ver: os.system(f"pip3 install {pck[0]}")
     from xitroo.api import xitroo
 except:
-    os.system(f"pip install {' '.join(pck).strip()}")
+    os.system(f"pip3 install {' '.join(pck).strip()}")
     print("\nPlease Restart the bot")
+    print("\nif you are on Linux and this step is repeated each time you launch it")
+    print("\nor if you have an error while installing pyqt5")
+    print("\nbe sure to install qt5 and python3-pyqt5")
+    print("\nif this still does not work you will need to compile a more recent version of python 3")
+    print("\nbe careful to use make altinstall so as not to replace the main version of your system")
     time.sleep(5)
     exit()
+
+plt = platform.system()
+if plt == "Linux":
+    from pathlib import Path
+    path_to_file = '/usr/bin/megatools'
+    path = Path(path_to_file)
+    if path.is_file():
+        os.system("rm -f megatools.exe")
+    else:
+        print(f'please install megatools binary to /usr/bin folder')
+        time.sleep(5)
+        exit()
+       
+elif plt == "Darwin":
+    from pathlib import Path
+    path_to_file = '/usr/bin/megatools'
+    path = Path(path_to_file)
+    if path.is_file():
+        os.system("rm -f megatools.exe")
+    else:
+        print(f'please install megatools binary to /usr/bin folder')
+        time.sleep(5)
+        exit()
+    
 
 class Ui(QtWidgets.QDialog):
     def __init__(self):
@@ -31,10 +68,15 @@ class Ui(QtWidgets.QDialog):
         self.Github.mousePressEvent = self.gt
 
     def gt(self, event):
-        os.system("start https://github.com/Th3K1n91/mega_nz-Creator")
+        plt = platform.system()
+        if   plt == "Windows":   os.system("start https://github.com/Th3K1n91/mega_nz-Creator")
+        elif plt == "Linux":     os.system("x-www-browser https://github.com/Th3K1n91/mega_nz-Creator")
+        elif plt == "Darwin":    os.system("safari https://github.com/Th3K1n91/mega_nz-Creator")
 
     def pr(self, event):
-        os.system("start https://cracked.io/insuckablyat88")
+        if   plt == "Windows":   os.system("start https://cracked.io/insuckablyat88")
+        elif plt == "Linux":     os.system("x-www-browser https://cracked.io/insuckablyat88")
+        elif plt == "Darwin":    os.system("safari https://cracked.io/insuckablyat88")
 
     def st(self):
         if self.username.text() and self.count.text() and self.password.text() and self.threads.text() != "":
