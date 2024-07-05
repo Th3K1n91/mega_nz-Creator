@@ -7,7 +7,7 @@ This script automates the creation of multiple Mega.nz accounts using provided c
 Before running the program, ensure you have the following:
 
 1. **MegaTools Binary (Linux Only)**
-    - Download and install MegaTools from the official repository: [MegaTools](https://megatools.megous.com/builds/builds/)
+    - Download and move MegaTools binary to your PATH from the official repository: [MegaTools](https://megatools.megous.com/builds/builds/)
 
 2. **Python Dependencies**
     - Install the required Python packages:
