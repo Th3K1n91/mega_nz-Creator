@@ -7,7 +7,7 @@ This script automates the creation of multiple Mega.nz accounts using provided c
 Before running the program, ensure you have the following:
 
 1. **MegaTools Binary (Linux Only)**
-    - Download and move MegaTools binary to your PATH from the official repository: [MegaTools](https://megatools.megous.com/builds/builds/)
+    - [MegaTools](https://megatools.megous.com/builds/builds/)
 
 2. **Python Dependencies**
     - Install the required Python packages:
@@ -19,12 +19,12 @@ Before running the program, ensure you have the following:
 
 1. **Install MegaTools**
 
-    Follow the instructions on the MegaTools website to download and install the appropriate binary for your Linux distribution.
+    Download and move MegaTools binary to your PATH from the official repository: [MegaTools](https://megatools.megous.com/builds/builds/)
 
 2. **Clone or Download the Repository**
 
     ```bash
-    git clone https://github.com/Th3K1n91/mega_nz-Creator
+    git clone https://github.com/Th3K1n91/mega_nz-Creator.git
     cd mega_nz-Creator
     ```
 
@@ -39,9 +39,15 @@ Before running the program, ensure you have the following:
 1. **Run the Program**
 
     To start the account creation process, run the following command:
-
+    #### Windows:
     ```bash
     python Main.py
+    ```
+    or Double click start.bat
+    
+    #### Linux:
+    ```bash
+    python3 Main.py
     ```
 PS.: Accounts are saved to `accounts.txt`
 
