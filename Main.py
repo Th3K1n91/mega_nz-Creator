@@ -40,7 +40,6 @@ class Main(QMainWindow):
             password: str = self.ui.password.text()
             que = queue.Queue()
             threads: list = []
-            lock = threading.Lock()
             for acc in accs:
                 que.put(acc)
 
@@ -73,7 +72,6 @@ class Main(QMainWindow):
 
     def github(self, event):
         self.openUrl("https://github.com/Th3K1n91/mega_nz-Creator")
-
 
     def checkPassword(self):
         special_characters = "!@#$%^&*()[]{}-+?_=,<>/"

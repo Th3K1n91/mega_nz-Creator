@@ -25,6 +25,7 @@ QLabel {
 	color: rgb(255, 255, 255)
 }
 QLineEdit {
+	color: white;
 	border-radius: 5px;
 }
 QLineEdit:focus {

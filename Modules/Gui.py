@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'megaIHpfwn.ui'
+## Form generated from reading UI file 'megaURgDuC.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.2
 ##
@@ -35,6 +35,7 @@ class Ui_MainWindow(object):
 "	color: rgb(255, 255, 255)\n"
 "}\n"
 "QLineEdit {\n"
+"	color: white;\n"
 "	border-radius: 5px;\n"
 "}\n"
 "QLineEdit:focus {\n"
