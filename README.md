@@ -1,116 +1,87 @@
-# Download/Install
-[Download Here (Python)](https://github.com/Th3K1n91/mega_nz-Creator/archive/refs/heads/main.zip) (Both WIN and Unix)<br>[Download Here (WIN-EXE)](https://github.com/Th3K1n91/mega_nz-Creator/releases)<br>or Clone this Repo
+# Mega.nz Account Creator
 
-## Install For Unix (Linux Mac OSX)
-install python3, qt5 and megatools binary
+This script automates the creation of multiple Mega.nz accounts using provided credentials. It utilizes the MegaTools binary for Linux and several Python dependencies. 
 
-# Start
-**Unix:**
-```
-python3 accr.py
-```
-<hr>
+## Requirements
 
-**Windows:**
-```
-python accr.py
-```
-```
-or double click accr.py or double click start.bat
-```
-<hr>
+Before running the program, ensure you have the following:
 
-Done!
+1. **MegaTools Binary (Linux Only)**
+    - [MegaTools](https://megatools.megous.com/builds/builds/)
 
-Accounts saved in **accounts.txt!**
+2. **Python Dependencies**
+    - Install the required Python packages:
+        - `unofficial-xitroo-api==0.9`
+        - `requests` or on linux `sudo apt install python3-requests`
+        - `pyside6`
 
-# Usage
-- <p>In Field Username you type in anything you want which will be the login after creating [<strong>string</strong>]</p>
-    <p><em>>>> It will generate [Your_input_in_username]+[Random_letters]@xitroo.de</em></p><br>
+## Installation
 
-- <p>In Field Count you type in how many accounts should be generated [<strong>integer</strong>]</p><br>
+1. **Install MegaTools**
 
-- <p>The Password field is as same the Username field but it will apply to all generated accounts [<strong>string</strong>]</p>
-  - <strong>Must be 8 characters long</strong><br>
-  - <strong>Must contain upper and lowercase letters</strong>
-    <p><em>>>> The Login would be [Your_input_in_username]+[Random_letters]@xitroo.de:[Your_input_in_password]</em></p><br>
-  
-- <p>In Threads field you will enter how many Accounts at once will be created [<strong>integer</strong>]</p>
-    <p><em>>>> It will open a Browser each thread so be careful which number you will input</em></p><br>
-  
-After everything is filled click on Button "Start" and wait at least 5 seconds, if nothing happens please check if every field is filled up
+    Download and move MegaTools binary to your PATH from the official repository: [MegaTools](https://megatools.megous.com/builds/builds/)
 
-# Example
-![/images/example.png](https://github.com/Th3K1n91/mega_nz-Creator/blob/main/images/example.PNG)
+2. **Clone or Download the Repository**
 
-### Output
-```
-EMAIL:PASSWORD
+    ```bash
+    git clone https://github.com/Th3K1n91/mega_nz-Creator.git
+    cd mega_nz-Creator
+    ```
 
-somethingHArIP@xitroo.de:SomeThing1
-somethingUk@xitroo.de:SomeThing1
-somethingrmUja@xitroo.de:SomeThing1
-somethingrmssx@xitroo.de:SomeThing1
-```
+3. **Install Python Dependencies**
 
-# Solve not start problem on Unix
+    ```bash
+    pip install unofficial-xitroo-api==0.9 requests pyside6
+    ```
 
-for Ubuntu/Debian with apt
+## Usage
 
-```
-sudo apt-get -y install python3 python3-request python3-pyqt5 qt5
-pip3 install importlib_metadata unofficial-xitroo-api==0.7
-python3 accr.py
-```
+1. **Run the Program**
 
-if not work use python 3.12 with ppa for Ubuntu Online
+    To start the account creation process, run the following command:
+    #### Windows:
+    ```bash
+    python Main.py
+    ```
+    or Double click start.bat
+    
+    #### Linux:
+    ```bash
+    python3 Main.py
+    ```
+PS.: Accounts are saved to `accounts.txt`
 
-```
-sudo add-apt-repository -y ppa:deadsnakes/ppa
-sudo apt-get update
-sudo apt-get -y install python3.12 qt5
-wget https://bootstrap.pypa.io/get-pip.py
-python3.12 get-pip.py
-rm -rf /usr/local/bin/pip /usr/local/bin/pip3
-/usr/local/bin/pip3.12 install importlib_metadata pyqt5 request unofficial-xitroo-api==0.7
-python3.12 accr.py
-```
+## Interface
 
-for Fedora/RedHat with dnf
+![Account Creator GUI Image](https://github.com/Th3K1n91/mega_nz-Creator/blob/main/images/example.PNG)
 
-```
-sudo yum -y install python3 python3-request python3-pyqt5 qt5
-pip3 install importlib_metadata unofficial-xitroo-api==0.7
-python3 accr.py
-```
+- **Username:** Enter the desired username for the Mega.nz account.
+- **Password:** Enter a secure password that meets the criteria:
+    - At least 8 characters long
+    - Contains at least one digit or special character
+    - Includes both uppercase and lowercase letters
+- **Count:** Specify the number of accounts to create.
+- **Threads:** Set the number of threads to use for the account creation process.
+- **Start Button:** Click to begin the account creation.
 
-if it still doesn't work you will need to compile python 3.12 from sources
+## Notes
 
-install build dependency for Ubuntu/Debian
+- Ensure you comply with Mega.nz's terms of service when using this tool.
+- Use responsibly and do not engage in spamming or creating accounts for malicious purposes.
 
-```
-sudo apt-get -y install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev wget qt5-dev
-```
 
-install build dependency for Fedora/RedHat
+## License
 
-```
-sudo yum -y install epel-release
-sudo yum -y group install "C Development Tools and Libraries" "Development Tools"
-sudo yum -y install zlib-devel openssl-devel ncurses-devel gdbm-devel readline-devel libffi-devel qt5 wget
-```
+This project is licensed under the GNU License. See the LICENSE file for details.
 
-build python 3.12 from source and start
+## Version
 
-```
-wget https://www.python.org/ftp/python/3.12.0/Python-3.12.0.tgz
-tar -xvf Python-3.12.0.tgz
-rm -f Python-3.12.0.tgz
-cd Python-3.12.0
-./configure --enable-optimizations
-make
-sudo make altinstall
-/usr/local/bin/pip3.12 install importlib_metadata pyqt5 request unofficial-xitroo-api==0.7
-python3.12 accr.py
-```
+- **Current Version:** 5.4.0
 
+## Contact
+
+For any issues or questions, please open an issue on the GitHub repository.
+
+---
+
+**Disclaimer:** This tool is for educational purposes only. The developers are not responsible for any misuse or damage caused by this software.

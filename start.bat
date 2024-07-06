@@ -1,1 +1,1 @@
-python accr.py
+python Main.py
