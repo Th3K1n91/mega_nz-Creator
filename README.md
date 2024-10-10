@@ -5,11 +5,12 @@ This script automates the creation of multiple Mega.nz accounts using provided c
 ## Requirements
 
 Before running the program, ensure you have the following:
+1. **Python 3.10 or greater**
 
-1. **MegaTools Binary (Linux Only)**
+2. **MegaTools Binary (Linux Only)**
     - [MegaTools](https://megatools.megous.com/builds/builds/)
 
-2. **Python Dependencies**
+3. **Python Dependencies (Windows Only or Linux manual install)**
     - Install the required Python packages:
         - `unofficial-xitroo-api==0.9`
         - `requests` or on linux `sudo apt install python3-requests`
@@ -17,38 +18,63 @@ Before running the program, ensure you have the following:
 
 ## Installation
 
+<details>
+<summary><b>Linux</b></summary>
+    
 1. **Install MegaTools**
-
+   
     Download and move MegaTools binary to your PATH from the official repository: [MegaTools](https://megatools.megous.com/builds/builds/)
-
+    
 2. **Clone or Download the Repository**
-
+    
     ```bash
     git clone https://github.com/Th3K1n91/mega_nz-Creator.git
     cd mega_nz-Creator
     ```
 
-3. **Install Python Dependencies**
+</details>
+<details>
+<summary><b>Windows</b></summary>
 
+1. **Clone or Download the Repository**
+    
+    ```bash
+    git clone https://github.com/Th3K1n91/mega_nz-Creator.git
+    cd mega_nz-Creator
+    ```
+    
+2. **Install Python Dependencies**
+    
     ```bash
     pip install unofficial-xitroo-api==0.9 requests pyside6
     ```
+</details>
+
 
 ## Usage
 
-1. **Run the Program**
+To start the account creation process, run the following command for your OS:
 
-    To start the account creation process, run the following command:
-    #### Windows:
-    ```bash
-    python Main.py
-    ```
-    or Double click start.bat
+<details>
+<summary><b>Windows</b></summary>
+<br>
     
-    #### Linux:
-    ```bash
-    python3 Main.py
-    ```
+```bash
+python Main.py
+```
+or Double click start.bat
+</details>
+
+
+<details>
+<summary><b>Linux</b></summary>
+<br>
+    
+```bash
+./start_linux.sh
+```
+</details>
+
 PS.: Accounts are saved to `accounts.txt`
 
 ## Interface
