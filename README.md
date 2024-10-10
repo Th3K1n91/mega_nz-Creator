@@ -5,11 +5,12 @@ This script automates the creation of multiple Mega.nz accounts using provided c
 ## Requirements
 
 Before running the program, ensure you have the following:
+1. **Python 3.10 or greater**
 
-1. **MegaTools Binary (Linux Only)**
+2. **MegaTools Binary (Linux Only)**
     - [MegaTools](https://megatools.megous.com/builds/builds/)
 
-2. **Python Dependencies (Windows Only or Linux manual install)**
+3. **Python Dependencies (Windows Only or Linux manual install)**
     - Install the required Python packages:
         - `unofficial-xitroo-api==0.9`
         - `requests` or on linux `sudo apt install python3-requests`
