@@ -18,11 +18,11 @@ class Main(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        self.ui.version.setText("V5.4.0")
+        self.ui.version.setText("V5.4.1")
 
         self.ui.password.textChanged.connect(self.checkPassword)
 
-        self.ui.start.clicked.connect(self.startSafely)
+        self.ui.start.clicked.connect(self.start)
         self.ui.info.mousePressEvent = self.info
         self.ui.infogithub.mousePressEvent = self.github
 
@@ -30,16 +30,11 @@ class Main(QMainWindow):
         inputs: list = [self.ui.password.text(), self.ui.username.text(), self.ui.threads.text(), self.ui.count.text()]
         empyt = any(len(sinput) == 0 for sinput in inputs)
         if self.validPass and not empyt:
-            self.ui.start.setDisabled(True)
-            self.ui.password.setDisabled(True)
-            self.ui.username.setDisabled(True)
-            self.ui.count.setDisabled(True)
-            self.ui.threads.setDisabled(True)
 
             accs: list = gen_accounts(prefix=self.ui.username.text(), count=int(self.ui.count.text()))
             password: str = self.ui.password.text()
             que = queue.Queue()
-            threads: list = []
+            # threads: list = []
             for acc in accs:
                 que.put(acc)
 
@@ -47,20 +42,26 @@ class Main(QMainWindow):
                 for i in range(0, int(self.ui.threads.text())):
                     if not que.empty():
                         t = threading.Thread(target=MegaTools(que.get(), password).register)
-                        threads.append(t)
+                        # threads.append(t)
                         t.start()
-                for t in threads:
-                    threads.remove(t)
-                    t.join()
+                # for t in threads:
+                #     threads.remove(t)
+                #     t.join()
 
-            self.ui.start.setDisabled(False)
-            self.ui.password.setDisabled(False)
-            self.ui.username.setDisabled(False)
-            self.ui.count.setDisabled(False)
-            self.ui.threads.setDisabled(False)
 
-    def startSafely(self):
-        self.threadmanager.start(self.start)
+    def setUi(self, boolean: bool):
+        self.ui.start.setDisabled(not boolean)
+        self.ui.password.setDisabled(not boolean)
+        self.ui.username.setDisabled(not boolean)
+        self.ui.count.setDisabled(not boolean)
+        self.ui.threads.setDisabled(not boolean)
+
+    # def startSafely(self):
+    #     self.setUi(False)
+    #     self.threadmanager.start(self.start)
+    #     self.threadmanager.waitForDone()
+    #     self.setUi(True)
+
 
     def openUrl(self, url):
         match os.name:
