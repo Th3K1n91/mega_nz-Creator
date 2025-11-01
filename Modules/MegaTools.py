@@ -1,13 +1,16 @@
+import threading
+
 from xitroo import Xitroo
 from subprocess import run, PIPE
 from Modules.Utils import *
 
 class MegaTools:
-    def __init__(self, email: str, password: str):
+    def __init__(self, email: str, password: str, threadLock: threading.Lock | None):
         self.email = email
         self.password = password
         self.xitroo = Xitroo(email)
         self.info = get_inofs()
+        self.lock = threadLock
 
         if os.name == 'nt':
             self.runnable = 'megatools.exe'
@@ -42,5 +45,8 @@ class MegaTools:
         self.save()
 
     def save(self):
-        open("accounts.txt", "a").write(self.email + ":" + self.password + "\n")
-
+        if self.lock is not None:
+            with self.lock:
+                open("accounts.txt", "a").write(self.email + ":" + self.password + "\n")
+        else:
+            open("accounts.txt", "a").write(self.email + ":" + self.password + "\n")

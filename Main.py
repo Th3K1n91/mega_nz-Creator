@@ -18,12 +18,13 @@ class Main(QMainWindow):
         self.accountQueue = queue.Queue()
         self.runnable: str
         self.validPass: bool = False
+        self.lock = threading.Lock()
 
         super(Main, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        self.ui.version.setText("V5.4.2")
+        self.ui.version.setText("V5.4.3")
 
         self.ui.password.textChanged.connect(self.checkPassword)
         self.running.connect(self._setUI)
@@ -34,13 +35,12 @@ class Main(QMainWindow):
     def worker(self, password, tid):
         while not self.accountQueue.empty():
             try:
-                MegaTools(self.accountQueue.get(), password).register()
+                MegaTools(self.accountQueue.get(), password, self.lock).register()
             except Exception as e:
                 print(f"Thread {tid} caught exception: {e}")
 
     def threadStart(self):
         threading.Thread(target=self.start).start()
-
 
     def start(self):
         inputs: list = [self.ui.password.text(), self.ui.username.text(), self.ui.threads.text(), self.ui.count.text()]
