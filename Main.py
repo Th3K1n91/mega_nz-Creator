@@ -1,16 +1,21 @@
 import queue
 import sys
 import threading
+
+import PySide6.QtCore
+
 from Modules.Utils import *
 from Modules.MegaTools import MegaTools
 from Modules.Gui import Ui_MainWindow
-from PySide6.QtCore import QThreadPool
+from PySide6.QtCore import QThreadPool, Signal
 from PySide6.QtWidgets import QMainWindow, QApplication
 
-
 class Main(QMainWindow):
+    running = Signal(bool)
+
     def __init__(self):
         self.threadmanager = QThreadPool()
+        self.accountQueue = queue.Queue()
         self.runnable: str
         self.validPass: bool = False
 
@@ -18,50 +23,53 @@ class Main(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        self.ui.version.setText("V5.4.1")
+        self.ui.version.setText("V5.4.2")
 
         self.ui.password.textChanged.connect(self.checkPassword)
-
-        self.ui.start.clicked.connect(self.start)
+        self.running.connect(self._setUI)
+        self.ui.start.clicked.connect(self.threadStart)
         self.ui.info.mousePressEvent = self.info
         self.ui.infogithub.mousePressEvent = self.github
+
+    def worker(self, password, tid):
+        while not self.accountQueue.empty():
+            try:
+                MegaTools(self.accountQueue.get(), password).register()
+            except Exception as e:
+                print(f"Thread {tid} caught exception: {e}")
+
+    def threadStart(self):
+        threading.Thread(target=self.start).start()
+
 
     def start(self):
         inputs: list = [self.ui.password.text(), self.ui.username.text(), self.ui.threads.text(), self.ui.count.text()]
         empyt = any(len(sinput) == 0 for sinput in inputs)
         if self.validPass and not empyt:
-
+            self.running.emit(True)
             accs: list = gen_accounts(prefix=self.ui.username.text(), count=int(self.ui.count.text()))
             password: str = self.ui.password.text()
-            que = queue.Queue()
-            # threads: list = []
+
+            threads: list = []
             for acc in accs:
-                que.put(acc)
+                self.accountQueue.put(acc)
 
-            while not que.empty():
-                for i in range(0, int(self.ui.threads.text())):
-                    if not que.empty():
-                        t = threading.Thread(target=MegaTools(que.get(), password).register)
-                        # threads.append(t)
-                        t.start()
-                # for t in threads:
-                #     threads.remove(t)
-                #     t.join()
+            for i in range(0, int(self.ui.threads.text())):
+                if not self.accountQueue.empty():
+                    t = threading.Thread(target=self.worker, args=(password, i, ))
+                    threads.append(t)
+                    t.start()
+            for t in threads:
+                t.join()
+            threads.clear()
+            self.running.emit(False)
 
-
-    def setUi(self, boolean: bool):
-        self.ui.start.setDisabled(not boolean)
-        self.ui.password.setDisabled(not boolean)
-        self.ui.username.setDisabled(not boolean)
-        self.ui.count.setDisabled(not boolean)
-        self.ui.threads.setDisabled(not boolean)
-
-    # def startSafely(self):
-    #     self.setUi(False)
-    #     self.threadmanager.start(self.start)
-    #     self.threadmanager.waitForDone()
-    #     self.setUi(True)
-
+    def _setUI(self, boolean: bool):
+        self.ui.start.setDisabled(boolean)
+        self.ui.password.setDisabled(boolean)
+        self.ui.username.setDisabled(boolean)
+        self.ui.count.setDisabled(boolean)
+        self.ui.threads.setDisabled(boolean)
 
     def openUrl(self, url):
         match os.name:
@@ -104,9 +112,6 @@ class Main(QMainWindow):
             self.ui.chars.setStyleSheet(notValid("chars"))
 
         self.validPass = (hasSpecialChar or hasDigit) and hasUpper and hasNoSpace and hasLength
-
-
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
