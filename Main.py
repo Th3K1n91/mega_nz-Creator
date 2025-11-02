@@ -24,7 +24,7 @@ class Main(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        self.ui.version.setText("V5.4.3")
+        self.ui.version.setText("V5.4.4")
 
         self.ui.password.textChanged.connect(self.checkPassword)
         self.running.connect(self._setUI)

@@ -1,11 +1,12 @@
 import threading
+from typing import Optional
 
 from xitroo import Xitroo
 from subprocess import run, PIPE
 from Modules.Utils import *
 
 class MegaTools:
-    def __init__(self, email: str, password: str, threadLock: threading.Lock | None):
+    def __init__(self, email: str, password: str, threadLock: Optional[threading.Lock]):
         self.email = email
         self.password = password
         self.xitroo = Xitroo(email)
